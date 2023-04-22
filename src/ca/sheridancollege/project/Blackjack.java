@@ -22,6 +22,7 @@ public class Blackjack extends Player{
        System.out.println("Welcome to the game of blackjack.");
     
        while (money > 0) {
+        boolean[] doubleDown = new boolean[1];
             System.out.println("You have " + money + " dollars.");
             while (true) {
                 System.out.println("How many dollars do you want to bet? (Enter 0 to end)");
@@ -36,11 +37,23 @@ public class Blackjack extends Player{
                 break;
             }
             Player player = new Player();
-            userWins = player.playBlackjack();
+            userWins = player.playBlackjack(doubleDown);
+
+            if (player.getHasInsurance()) {
+                money -= bet / 2;}
+
             if (userWins) {
-                money += bet;
+                if (doubleDown[0]) { // Check if the user doubled down
+                    money += bet * 2;
+                } else {
+                    money += bet;
+                }
             } else {
-                money -= bet;
+                if (doubleDown[0]) { // Check if the user doubled down
+                    money -= bet * 2;
+                } else {
+                    money -= bet;
+                }
             }
             System.out.println();
         }
